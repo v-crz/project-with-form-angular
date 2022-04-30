@@ -10,6 +10,7 @@ describe('Form component', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
+            // Se importan como en pages.modules
             imports: [
                 FormsModule,
                 ReactiveFormsModule,

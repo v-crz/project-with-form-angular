@@ -5,6 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
 import { of } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
 
 const listBook: Book[] = [
     {
@@ -60,6 +61,10 @@ describe('Home component', () => {
                     provide: BookService,
                     useValue: bookServiceMock
                 },
+                {
+                    provide: Document,
+                    useExisting: DOCUMENT   // Importar algo que ya existe
+                }
             ],
             schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
         }).compileComponents();
@@ -83,5 +88,12 @@ describe('Home component', () => {
         expect(component.listBook.length).toBe(3);
     });
 
-
+    it('Test alert', () => {
+        // TestBed para obtener un servicio
+        const documentService = TestBed.inject(Document);
+        const windowAngular = documentService.defaultView;
+        const spy = spyOn(windowAngular, 'alert').and.callFake(() => null);
+        component.ngOnInit();
+        expect(spy).toHaveBeenCalled();
+    });
 });
